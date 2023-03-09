@@ -48,44 +48,59 @@
             </div>
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
               <div class="selected-user">
-                <span>LGTM Channel</span>
+                <span>{{selectedChannel}}</span>
               </div>
               <div class="chat-container">
                 <ul class="chat-box chatContainerScroll">
                   <li class="chat-left">
-                    <button type="button" class="btn btn-info">
+                    <button type="button" class="btn btn-info" (click)="fetchOldMessages()">
                       Read More <i class="fa fa-arrow-up"></i>
                     </button>
                   </li>
-
-                  <ng-container *ngFor="let message of messages">
-                    <li class="chat-left" *ngIf="message.user? message.user.id !== selectedUser?.id:false">
-                      <div class="chat-avatar">
-                        <img [src]="message.user?message.user.image:''" alt="User">
-                        <div class="chat-name">{{message.userId}}</div>
-                      </div>
-                      <div class="chat-text">{{message.text}}</div>
-                      <div class="chat-hour">{{message.time}}</div>
-                    </li>
-                    <li class="chat-right" *ngIf="message.user? message.user.id === selectedUser?.id:false">
-                      <div class="chat-hour">{{message.time}} <span class="fa fa-check-circle"></span> <span
-                          class="chat-message">Sent</span></div>
-                      <div class="chat-text">{{message.text}}</div>
-                      <div class="chat-avatar">
-                        <img [src]="message.user?message.user.image:''" alt="User">
-                        <div class="chat-name">{{message.userId}}</div>
-                      </div>
+                  <ng-container *ngIf="isLoaing">
+                    <li class="loading">
+                      Loading...
                     </li>
                   </ng-container>
-                  <li class="left">
-                    <button type="button" class="btn btn-info">
+                  <ng-container *ngIf="!isLoaing">
+                    <ng-container *ngFor="let message of messages">
+                      <li class="chat-left" *ngIf="message.user? message.user.id !== selectedUser?.id:false">
+                        <div class="chat-avatar">
+                          <img [src]="message.user?message.user.image:''" alt="User">
+                          <div class="chat-name">{{message.userId}}</div>
+                        </div>
+                        <div class="chat-text">{{message.text}}</div>
+                        <div class="chat-hour">{{message.time}}</div>
+                      </li>
+                      <li class="chat-right" *ngIf="message.user? message.user.id === selectedUser?.id:false">
+                        <div class="chat-hour">{{message.time}}<br>
+                          <ng-container *ngIf="!message.errMessage">
+                            <span class="fa fa-check-circle"></span>
+                            <span class="chat-message">Sent</span>
+                          </ng-container>
+                          <ng-container *ngIf="message.errMessage">
+                            <span class="fa fa-exclamation-circle"></span>
+                            <span class="chat-message">{{message.errMessage}}</span>
+                          </ng-container>
+                        </div>
+                        <div class="chat-text">{{message.text}}</div>
+                        <div class="chat-avatar">
+                          <img [src]="message.user?message.user.image:''" alt="User">
+                          <div class="chat-name">{{message.userId}}</div>
+                        </div>
+                      </li>
+                    </ng-container>
+                  </ng-container>
+                  <li class="left" id="box">
+                    <button type="button" class="btn btn-info" (click)="fetchNewestMessages()">
                       Read More <i class="fa fa-arrow-down"></i>
                     </button>
                   </li>
                 </ul>
                 <div class="form-group mt-3 mb-0">
-                  <textarea class="form-control" rows="3" placeholder="Type your message here..."></textarea>
-                  <button type="button" class="btn btn-info">
+                  <textarea class="form-control" rows="3" placeholder="Type your message here..."
+                    [(ngModel)]="message"></textarea>
+                  <button type="button" class="btn btn-info" (click)="sendMessage()">
                     Send Message <i class="fa fa-send"></i>
                   </button>
                 </div>

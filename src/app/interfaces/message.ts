@@ -5,6 +5,7 @@ export interface MessageInterface {
     text: string
     userId: string,
     datetime: string,
-    user: UserInterface|undefined,
-    time: string
+    user: UserInterface | undefined,
+    time: string,
+    errMessage: string|null
 }

@@ -1,0 +1,24 @@
+.chatContainerScroll {
+    height: 450px;
+    overflow: scroll;
+}
+
+.loading {
+    height: 450px;
+}
+
+.chat-container li {
+    align-items: center;
+
+    &.chat-right {
+        .chat-text {
+            min-height: 50px;
+            margin-left: 10px;
+        }
+    }
+
+    .chat-hour {
+        display: block;
+    }
+
+}
